@@ -8,13 +8,11 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 
 @MappedSuperclass
-@Getter
-@Setter
+@Data
 public abstract class BaseEntity implements Serializable { //Serializable bu nesnenin networkten tasinabilmesini veya diske yazilabilmesi gibi islemleri bu classa o yetenekleri kazandirmak icin implement ediyoruz.
 	
 	@Column(name = "created_at")
