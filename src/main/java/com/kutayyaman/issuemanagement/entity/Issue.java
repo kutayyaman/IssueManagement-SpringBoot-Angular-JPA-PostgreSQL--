@@ -45,6 +45,6 @@ public class Issue extends BaseEntity {
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	private Project project;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "issue")
 	private List<IssueHistory> issueHistories;
 }
