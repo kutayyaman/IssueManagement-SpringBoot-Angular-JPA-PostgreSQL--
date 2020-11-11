@@ -2,13 +2,14 @@ package com.kutayyaman.issuemanagement.api;
 
 import com.kutayyaman.issuemanagement.dto.ProjectDto;
 import com.kutayyaman.issuemanagement.service.impl.ProjectServiceImpl;
+import com.kutayyaman.issuemanagement.util.ApiPaths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/project")
+@RequestMapping(ApiPaths.ProjectCtrl.CTRL)
 public class ProjectController {
 
     private final ProjectServiceImpl projectService;
