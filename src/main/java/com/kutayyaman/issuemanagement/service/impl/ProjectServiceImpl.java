@@ -1,11 +1,14 @@
 package com.kutayyaman.issuemanagement.service.impl;
 
+import com.kutayyaman.issuemanagement.dto.ProjectDto;
 import com.kutayyaman.issuemanagement.entity.Project;
 import com.kutayyaman.issuemanagement.repository.ProjectRepository;
 import com.kutayyaman.issuemanagement.service.ProjectService;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -14,32 +17,44 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private  final ProjectRepository projectRepository;
+    private final ModelMapper modelMapper;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository){
+    public ProjectServiceImpl(ProjectRepository projectRepository, ModelMapper modelMapper){
+
         this.projectRepository = projectRepository;
+        this.modelMapper = modelMapper;
     }
 
-    @Override
-    public Project save(Project project) {
-
-        if(project.getProjectCode() == null){
-            throw new IllegalArgumentException("Project Code Cannot Be Null");
+    private void projectCodeValidation(String projectCode) {
+        if(projectRepository.getByProjectCode(projectCode) != null){
+            throw new IllegalArgumentException("Project Code Already Exist");
         }
-
-        return projectRepository.save(project);
-
     }
 
     @Override
-    public Project getById(Long id) {
+    public ProjectDto save(ProjectDto projectDto) {
+        projectCodeValidation(projectDto.getProjectCode());
 
-        return projectRepository.getOne(id);
+        Project project = modelMapper.map(projectDto, Project.class);
+
+        project = projectRepository.save(project);
+
+        projectDto.setId(project.getId());
+
+        return projectDto;
     }
 
     @Override
-    public List<Project> getByProjectCode(String projectCode) {
+    public ProjectDto getById(Long id) {
+        Project project = projectRepository.getOne(id);
+        ProjectDto projectDto = modelMapper.map(project, ProjectDto.class);
+        return projectDto;
+    }
 
-        return projectRepository.getByProjectCode(projectCode);
+    @Override
+    public ProjectDto getByProjectCode(String projectCode) {
+
+        return null;
     }
 
     @Override
@@ -60,5 +75,29 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.delete(project);
         return Boolean.TRUE;
 
+    }
+
+    public Boolean delete(Long id){
+        projectRepository.deleteById(id);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public ProjectDto update(Long id, ProjectDto projectDto) {
+        Project project = projectRepository.getOne(id);
+        if(project == null){
+            throw new IllegalArgumentException("Project Does Not Exist ID:" +id);
+        }
+
+        Project projectCheck = projectRepository.getByProjectCodeAndIdNot(projectDto.getProjectCode(),id);
+        if(projectCheck != null){
+            throw new IllegalArgumentException("Project Code Already Exist");
+        }
+
+        project.setProjectCode(projectDto.getProjectCode());
+        project.setProjectName(projectDto.getProjectName());
+
+        project = projectRepository.save(project); //id'si ile beraber gittigi icin bu sefer ekleme degil update modunda calisacak bu save methodu.
+        return modelMapper.map(project,ProjectDto.class);
     }
 }
