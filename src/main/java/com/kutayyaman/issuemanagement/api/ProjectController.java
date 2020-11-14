@@ -3,9 +3,11 @@ package com.kutayyaman.issuemanagement.api;
 import com.kutayyaman.issuemanagement.dto.ProjectDto;
 import com.kutayyaman.issuemanagement.service.impl.ProjectServiceImpl;
 import com.kutayyaman.issuemanagement.util.ApiPaths;
+import com.kutayyaman.issuemanagement.util.TPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,12 @@ public class ProjectController {
 
     public ProjectController(ProjectServiceImpl projectService){
         this.projectService = projectService;
+    }
+
+    @GetMapping("/pagination")
+    @ApiOperation(value = "Get By Pagination Operation", response = ProjectDto.class)
+    public ResponseEntity<TPage<ProjectDto>> getAllByPagination(Pageable pageable){
+        return ResponseEntity.ok(projectService.getAllPageable(pageable));
     }
 
     @GetMapping("/{id}")

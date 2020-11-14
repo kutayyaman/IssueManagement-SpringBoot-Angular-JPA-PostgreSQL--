@@ -4,12 +4,14 @@ import com.kutayyaman.issuemanagement.dto.ProjectDto;
 import com.kutayyaman.issuemanagement.entity.Project;
 import com.kutayyaman.issuemanagement.repository.ProjectRepository;
 import com.kutayyaman.issuemanagement.service.ProjectService;
+import com.kutayyaman.issuemanagement.util.TPage;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -64,9 +66,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<Project> getAllPageable(Pageable pageable) {
+    public TPage<ProjectDto> getAllPageable(Pageable pageable) {
 
-        return projectRepository.findAll(pageable);
+        Page<Project> data = projectRepository.findAll(pageable);
+        TPage<ProjectDto> response = new TPage<ProjectDto>(data, Arrays.asList(modelMapper.map(data.getContent(), ProjectDto[].class)));
+        return response;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.kutayyaman.issuemanagement.service;
 
 import com.kutayyaman.issuemanagement.dto.ProjectDto;
 import com.kutayyaman.issuemanagement.entity.Project;
+import com.kutayyaman.issuemanagement.util.TPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,7 +18,7 @@ public interface ProjectService {
 
     List<Project> getByProjectCodeContains(String projectCode);
 
-    Page<Project> getAllPageable(Pageable pageable);
+    TPage<ProjectDto> getAllPageable(Pageable pageable);
 
     Boolean delete(Project project);
 
