@@ -5,6 +5,7 @@ import com.kutayyaman.issuemanagement.service.impl.ProjectServiceImpl;
 import com.kutayyaman.issuemanagement.util.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(ApiPaths.ProjectCtrl.CTRL)
 @Api(value = ApiPaths.ProjectCtrl.CTRL, description = "Project APIs")
+@Slf4j //Loglama icin bir instance veriyor bize adi log
 public class ProjectController {
 
     private final ProjectServiceImpl projectService;
@@ -24,6 +26,7 @@ public class ProjectController {
     @GetMapping("/{id}")
     @ApiOperation(value = "Get By Id Operation", response = ProjectDto.class)
     public ResponseEntity<ProjectDto> getById(@PathVariable(value = "id", required = true) Long id){
+        log.info("ProjectController->GetByID->Param: "+id);
         ProjectDto projectDto = projectService.getById(id);
         return ResponseEntity.ok(projectDto);
     }
