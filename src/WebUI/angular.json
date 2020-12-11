@@ -124,5 +124,10 @@
   "defaultProject": "issue-management",
   "cli": {
     "analytics": "757228dd-fce4-42f3-80cc-a08f7c18d2c5"
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
   }
 }
