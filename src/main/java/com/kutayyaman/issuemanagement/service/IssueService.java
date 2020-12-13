@@ -4,6 +4,8 @@ import com.kutayyaman.issuemanagement.dto.IssueDto;
 import com.kutayyaman.issuemanagement.util.TPage;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IssueService {
 
     IssueDto save(IssueDto issue);
@@ -17,5 +19,7 @@ public interface IssueService {
     Boolean deleteById(Long id);
 
     IssueDto update(Long id, IssueDto issueDto);
+
+    List<IssueDto> getAll();
 
 }

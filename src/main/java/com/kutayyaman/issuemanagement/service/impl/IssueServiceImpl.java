@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Service//IoC contanerda singleton instancelari olusturacak bu anatasyon boylelikle @Autowired diyerek veya kurucu ile injecti edebilecez
@@ -61,6 +62,13 @@ public class IssueServiceImpl implements IssueService {
         IssueDto[] dtos = modelMapper.map(page.getContent(), IssueDto[].class);
 
         return new TPage<IssueDto>(page, Arrays.asList(dtos));
+    }
+
+    @Override
+    public List<IssueDto> getAll() {
+
+        List<Issue> data = issueRepository.findAll();
+        return Arrays.asList(modelMapper.map(data, IssueDto[].class));
     }
 
     @Override
