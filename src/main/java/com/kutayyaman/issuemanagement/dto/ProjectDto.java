@@ -16,11 +16,17 @@ public class ProjectDto {
 
     @ApiModelProperty(value = "Id Of Project") //Swagger icin
     private Long id;
+
     @NotNull
     @ApiModelProperty(required = true,value = "Name Of Project")
     private String projectName;
+
     @NotNull
     @ApiModelProperty(required = true,value = "Code Of Project")
     private String projectCode;
+
+    @NotNull
+    @ApiModelProperty(required = true,value = "Project Manager ID")
+    private String managerId;
 
 }

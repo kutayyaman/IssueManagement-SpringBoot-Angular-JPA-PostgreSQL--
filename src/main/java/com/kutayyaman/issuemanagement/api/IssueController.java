@@ -3,6 +3,7 @@ package com.kutayyaman.issuemanagement.api;
 import javax.validation.Valid;
 
 import com.kutayyaman.issuemanagement.dto.ProjectDto;
+import com.kutayyaman.issuemanagement.entity.IssueStatus;
 import com.kutayyaman.issuemanagement.util.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import com.kutayyaman.issuemanagement.dto.IssueDto;
 import com.kutayyaman.issuemanagement.service.impl.IssueServiceImpl;
 
+import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
@@ -49,6 +52,12 @@ public class IssueController {
     @ApiOperation(value = "Delete Operation", response = Boolean.class)
     public ResponseEntity<Boolean> delete(@PathVariable(value = "id",required = true) Long id){
         return ResponseEntity.ok(issueServiceImpl.deleteById(id));
+    }
+
+    @GetMapping("/statuses")
+    @ApiOperation(value = "Get All Issue Statuses Operation", response = String.class, responseContainer = "List")
+    public ResponseEntity<List<IssueStatus>> getAllIssueStatus() {
+        return ResponseEntity.ok(Arrays.asList(IssueStatus.values()));
     }
 
 

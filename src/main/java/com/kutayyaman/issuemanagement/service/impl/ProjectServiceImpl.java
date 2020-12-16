@@ -1,8 +1,11 @@
 package com.kutayyaman.issuemanagement.service.impl;
 
 import com.kutayyaman.issuemanagement.dto.ProjectDto;
+import com.kutayyaman.issuemanagement.dto.UserDto;
 import com.kutayyaman.issuemanagement.entity.Project;
+import com.kutayyaman.issuemanagement.entity.User;
 import com.kutayyaman.issuemanagement.repository.ProjectRepository;
+import com.kutayyaman.issuemanagement.repository.UserRepository;
 import com.kutayyaman.issuemanagement.service.ProjectService;
 import com.kutayyaman.issuemanagement.util.TPage;
 import org.modelmapper.ModelMapper;
@@ -18,13 +21,15 @@ import java.util.List;
 @Service//IoC contanerda singleton instancelari olusturacak bu anatasyon boylelikle @Autowired diyerek veya kurucu ile injecti edebilecez
 public class ProjectServiceImpl implements ProjectService {
 
-    private  final ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
     private final ModelMapper modelMapper;
+    private final UserRepository userService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, ModelMapper modelMapper){
+    public ProjectServiceImpl(ProjectRepository projectRepository, ModelMapper modelMapper, UserRepository userService){
 
         this.projectRepository = projectRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
     private void projectCodeValidation(String projectCode) {
@@ -38,7 +43,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectCodeValidation(projectDto.getProjectCode());
 
         Project project = modelMapper.map(projectDto, Project.class);
-
+        User user = userService.getOne(Long.parseLong(projectDto.getManagerId()));
+        project.setManager(user);
         project = projectRepository.save(project);
 
         projectDto.setId(project.getId());
